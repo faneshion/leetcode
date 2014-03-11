@@ -22,7 +22,9 @@ int main(void)
     head.next = &l1;
     l1.next = &l2;
     print(&head);
+    cout<<endl;
     print(insertionListNode(&head));
+    cout<<endl;
 
     return 1;
 }
@@ -54,6 +56,7 @@ ListNode* insertionListNode(ListNode* head){
                     head = p1->next;
                     p1->next = p2->next;
                     p2->next = p1;
+                    last = p1;
                     break;
                 }else
                     p2 = p2->next;

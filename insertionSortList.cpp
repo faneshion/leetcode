@@ -31,44 +31,35 @@ int main(void)
 ListNode* insertionListNode(ListNode* head){
     if(!head || !head->next)
         return head;
-    ListNode* last = head->next;
-    while(last->next)
-        last = last->next;
-    ListNode *p1,*p2;
-    p1 = p2 = NULL;
-    while(head!=last){
-        p2 = p1 = head;
-        while(p2->next !=last)
-            p2 = p2->next;
-        if(p1 == p2 && p1->val <=p2->next->val){
-            last = p1;
-            return last;
-        }else if(p1 == p2){
-            while(p2->next && p2->next->val <= p1->val)
-                p2=p2->next;
-            p1->next = p2->next;
-            p2->next = p1;
-            return last;
-        }
-        else{
-            while(p2->next){
-                if(p1->val <=p2->next->val){
-                    head = p1->next;
-                    p1->next = p2->next;
-                    p2->next = p1;
-                    last = p1;
-                    break;
-                }else
-                    p2 = p2->next;
+    ListNode* currpre = head;
+    ListNode *curr = head->next;
+    while(curr){
+        ListNode *pre,*p1;
+        pre = p1 = head;
+        if(curr->val < p1->val){
+            currpre->next = curr->next;
+            head = curr;
+            head->next = p1;
+            curr = currpre->next;
+            continue;
+        }else{
+            p1 = p1->next;
+            while(p1!=curr && curr->val > p1->val){
+                p1 = p1->next;
+                pre = pre->next;
             }
-            if(!p2->next){
-                head = p1->next;
-                p1->next = p2->next;
-                p2->next = p1;
+            if(p1 == curr){
+                currpre = curr;
+                curr = curr->next;
+            }else{
+                currpre->next = curr->next;
+                curr->next = pre->next;
+                pre->next = curr;
+                curr = currpre->next;
             }
         }
     }
-    return last;
+    return head;
 }
 
 void print(ListNode* head){
